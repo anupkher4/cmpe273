@@ -24,12 +24,12 @@ public class VoteController {
     HashMap<Long, Moderator> map = new HashMap<Long, Moderator>();
     HashMap<Long, Poll> pMap = new HashMap<Long, Poll>();
 
-    @RequestMapping("/")
+    @RequestMapping("/api/v1")
     public String welcome() {
         return "Welcome to MyVote";
     }
 
-    @RequestMapping(value = "/moderators", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/moderators", method = RequestMethod.POST)
     public @ResponseBody Moderator createModerator(@RequestBody Moderator mod) {
 
         long atomicId = modId.incrementAndGet();
@@ -44,7 +44,7 @@ public class VoteController {
         return mod;
     }
 
-    @RequestMapping(value = "/moderators/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/v1/moderators/{id}", method = RequestMethod.GET)
     public @ResponseBody Moderator getModerator(@PathVariable("id") long id) {
 
         Moderator getMod;
@@ -53,7 +53,7 @@ public class VoteController {
         return new Moderator(getMod);
     }
 
-    @RequestMapping(value = "/moderators/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/v1/moderators/{id}", method = RequestMethod.PUT)
     public @ResponseBody Moderator updateModerator(@RequestBody Moderator mod, @PathVariable("id") long id) {
 
         Moderator putMod = map.get(id);
@@ -67,7 +67,7 @@ public class VoteController {
         return mod;
     }
 
-    @RequestMapping(value = "/moderators/{id}/polls", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/moderators/{id}/polls", method = RequestMethod.POST)
     public @ResponseBody Poll createPoll(@RequestBody Poll po, @PathVariable("id") long id) {
         long atomicId = poId.incrementAndGet();
         Integer[] postRes = {200, 600};
@@ -82,7 +82,7 @@ public class VoteController {
         return po;
     }
 
-    @RequestMapping(value = "/polls/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/v1/polls/{id}", method = RequestMethod.GET)
     public @ResponseBody Poll getPoll(@PathVariable("id") long id) {
         Poll tempPoll;
         tempPoll = pMap.get(id);
@@ -93,7 +93,7 @@ public class VoteController {
         return getPoll;
     }
 
-    @RequestMapping(value = "/moderators/{modId}/polls/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/v1/moderators/{modId}/polls/{id}", method = RequestMethod.GET)
     public @ResponseBody Poll getModPoll(@PathVariable("modId") long modId, @PathVariable("id") long id) {
         Poll tempPoll;
         tempPoll = pMap.get(id);
@@ -108,7 +108,7 @@ public class VoteController {
         return getPoll;
     }
 
-    @RequestMapping(value = "moderators/{modId}/polls", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/v1/moderators/{modId}/polls", method = RequestMethod.GET)
     public @ResponseBody Poll[] allPolls(@PathVariable("modId") long modId) {
         Poll[] tempPoll = new Poll[pMap.size()];
         Poll[] getPoll = new Poll[pMap.size()];
@@ -127,12 +127,12 @@ public class VoteController {
         return getPoll;
     }
 
-    @RequestMapping(value = "/moderators/{modId}/polls/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/v1/moderators/{modId}/polls/{id}", method = RequestMethod.DELETE)
     public @ResponseBody void deletePoll(@PathVariable("id") long id) {
         pMap.remove(id);
     }
 
-    @RequestMapping(value = "/polls/{id}?choice={choiceId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/v1/polls/{id}?choice={choiceId}", method = RequestMethod.PUT)
     public void votePoll(@PathVariable("id") long id, @RequestParam("choiceId") int choiceId) {
 
         Poll po = pMap.get(id);
